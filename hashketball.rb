@@ -3,7 +3,7 @@ require 'pry'
 def game_hash 
   
 { 
-  away: { :team_name => "Charlotte Hornets",
+  :away => { :team_name => "Charlotte Hornets",
                 :colors => ["Turquoise", "Purple"],
                 :players => [
          {:player_name => "Jeff Adrien",
@@ -63,7 +63,7 @@ def game_hash
        ]
     },
     
-    home: { :team_name => "Brooklyn Nets",
+    :home => { :team_name => "Brooklyn Nets",
               :colors => ["Black", "White"],
               :players => [
             { :player_name => "Alan Anderson",
@@ -131,13 +131,73 @@ def num_points_scored(player_name)
     team.each do |attribute, data|
       if attribute == :players
         data.each do |player|
-          if player[:players_name]
-            binding.pry
+          if player[:players_name] == players.name
+            return player[:points]
+          end
         end 
       end
     end
   end
 end
 
+def shoe_size(players_name)
+    game_hash.each do |place, team|
+    team.each do |attribute, data|
+      if attribute == :players
+        data.each do |player|
+          if player[:players_name] == players.name
+            return player[:shoe]
+          end
+        end 
+      end
+    end
+  end
+end 
+
+def team_colors(team_name)
+  game_hash.each do |place, team|
+    if team[:team_name] == team_name
+      return team[:colors]
+    end
+  end 
+end
+
+def team_names
+  game_hash.map do |place, team|
+    team[:team_name]
+  end
+end
+
+def player_numbers(team_name)
+  game_hash.map do |place, team|
+    if team[:team_name] == team_name
+      team.each do |attributes, data|
+        if attributes == :players
+          data.each do |player|
+            player[:number]
+          end
+        end
+      end
+    end
+  end
+end 
+
+def player_stats(players_name)
+  new_hash = {} #return new hash of player stats
+  game_hash.each do |place team| #iterate over hash
+    team.each do |attributes, data| #key, value pairs
+    if attributes == :players #only want players data
+      data.each do |player| #returns array with element of player
+      if player[:player_name] == players_name 
+          new_hash = player.delete_if do |key, value| #deletes any key that equals player name
+          key == :player_name
+            end
+          end
+        end
+      end
+    end
+  end
+  new_hash
+end
 
  
